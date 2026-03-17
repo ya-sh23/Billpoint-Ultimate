@@ -1,0 +1,116 @@
+<div class="login-wrapper">
+  <div class="logo-top">
+    
+    <h1>BillPoint</h1>
+  </div>
+  
+  <div class="login-header">
+    <h2>Create an account</h2>
+    <p>Join BillPoint and streamline your store operations</p>
+  </div>
+
+  <div class="login-card">
+    <div *ngIf="error" class="error-banner">
+      {{ error }}
+    </div>
+
+    <div *ngIf="message" class="success-banner">
+      {{ message }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      
+      <div class="input-group">
+        <label>Username</label>
+        <input
+          type="text"
+          name="ownerName"
+          [(ngModel)]="form.username"
+          placeholder="e.g. John's Mart"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Contact Number</label>
+        <input
+          type="tel"
+          name="phone"
+          [(ngModel)]="form.phone"
+          placeholder="e.g. +1 234 567 8900"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Email</label>
+        <input
+          type="text"
+          name="username"
+          [(ngModel)]="form.email"
+          placeholder="Choose a username"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="form.password"
+          placeholder="Create a password"
+          required
+        />
+      </div>
+
+      <!-- Hidden fields to maintain backend compatibility -->
+      <!-- <input type="hidden" name="role" [(ngModel)]="form.role" value="SHOP_OWNER"> -->
+      <div class="input-group">
+        <label>Select Role</label>
+        <select name="role" [(ngModel)]="form.role" required>
+          <option value="CUSTOMER">Customer</option>
+          <option value="SHOP_OWNER">Shop Owner</option>
+        </select>
+      </div>
+
+      <!-- Shop Owner Specific Fields -->
+      <div *ngIf="form.role === 'SHOP_OWNER'">
+        <div class="input-group">
+          <label>Business Name</label>
+          <input type="text" name="businessName" [(ngModel)]="form.businessName" placeholder="Enter your business name" required />
+        </div>
+
+        <div class="input-group">
+          <label>PAN Card</label>
+          <input type="text" name="panCard" [(ngModel)]="form.panCard" placeholder="Enter PAN number" required />
+        </div>
+
+        <div class="input-group">
+          <label>GSTIN</label>
+          <input type="text" name="gstin" [(ngModel)]="form.gstin" placeholder="Enter GST number" required />
+        </div>
+
+        <div class="input-group">
+          <label>Address</label>
+          <input type="text" name="address" [(ngModel)]="form.address" placeholder="Business address" required />
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="!registerForm.form.valid"
+        class="btn-primary"
+      >
+        Register
+      </button>
+
+    </form>
+
+    <div class="auth-divider">
+      <span>Already have an account?</span>
+    </div>
+
+    <a routerLink="/login" class="btn-outline-primary block-btn">Sign in instead</a>
+  </div>
+</div>
