@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,11 @@ export class LoginComponent {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private toast: ToastService
+  ) {}
 
   selectRole(role: string) {
     this.selectedRole = role;
@@ -35,6 +40,7 @@ export class LoginComponent {
       next: (response: any) => {
         this.isLoading = false;
         const role = response.role;
+        this.toast.success("Login successful!");
         
         switch(role) {
           case 'ADMIN':
@@ -50,12 +56,14 @@ export class LoginComponent {
             this.router.navigate(['/customer-dashboard']);
             break;
           default:
-            this.errorMessage = 'Invalid role detected';
+            this.toast.error('Invalid role detected');
         }
       },
       error: (err) => {
         this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Login failed. Please check your credentials.';
+        const msg = err.error?.message || 'Login failed. Please check your credentials.';
+        this.errorMessage = msg;
+        this.toast.error(msg);
       }
     });
   }

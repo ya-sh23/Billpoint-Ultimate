@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
 import { FormsModule } from '@angular/forms';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -22,7 +23,11 @@ export class AdminDashboardComponent implements OnInit {
 
   private adminApiUrl = 'http://localhost:8080/api/admin';
 
-  constructor(public authService: AuthService, private http: HttpClient) {}
+  constructor(
+    public authService: AuthService, 
+    private http: HttpClient,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadRequests();
@@ -45,11 +50,11 @@ export class AdminDashboardComponent implements OnInit {
     const payload = { planName: this.approvalPlan, validMonths: this.validMonths };
     this.http.post(`${this.adminApiUrl}/requests/${id}/approve`, payload).subscribe({
       next: (res: any) => {
-        alert(res.message);
+        this.toast.success(res.message);
         this.loadRequests();
         this.loadShops();
       },
-      error: (err) => alert('Error approving: ' + err.error?.message)
+      error: (err) => this.toast.error('Error approving: ' + err.error?.message)
     });
   }
 
@@ -57,10 +62,10 @@ export class AdminDashboardComponent implements OnInit {
     if(confirm('Are you sure you want to reject this request?')) {
       this.http.post(`${this.adminApiUrl}/requests/${id}/reject`, {}).subscribe({
         next: (res: any) => {
-          alert(res.message);
+          this.toast.success(res.message);
           this.loadRequests();
         },
-        error: (err) => alert('Error rejecting: ' + err.error?.message)
+        error: (err) => this.toast.error('Error rejecting: ' + err.error?.message)
       });
     }
   }

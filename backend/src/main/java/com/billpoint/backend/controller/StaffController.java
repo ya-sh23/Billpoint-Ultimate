@@ -191,10 +191,17 @@ public class StaffController {
         }
 
         bill.setTotalAmount(billRequest.getTotalAmount());
-        bill.setDiscount(
-                billRequest.getDiscount() != null
-                        ? billRequest.getDiscount()
-                        : java.math.BigDecimal.ZERO);
+        
+        java.math.BigDecimal discountAmount = java.math.BigDecimal.ZERO;
+        if (billRequest.getDiscountPercentage() != null && billRequest.getDiscountPercentage().compareTo(java.math.BigDecimal.ZERO) > 0) {
+            discountAmount = billRequest.getTotalAmount()
+                .multiply(billRequest.getDiscountPercentage())
+                .divide(new java.math.BigDecimal("100"), 2, java.math.RoundingMode.HALF_UP);
+        } else if (billRequest.getDiscount() != null) {
+            discountAmount = billRequest.getDiscount();
+        }
+        
+        bill.setDiscount(discountAmount);
 
         bill.setFinalAmount(billRequest.getFinalAmount());
         bill.setPaymentMode(billRequest.getPaymentMode());

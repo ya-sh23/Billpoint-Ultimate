@@ -41,8 +41,8 @@
       <div class="attendance-form card-form mb-4">
         <div class="form-grid">
           <div class="input-group">
-            <label>Date</label>
-            <input type="date" [(ngModel)]="attendance.date">
+            <label>Date (Auto-generated)</label>
+            <input type="date" [(ngModel)]="attendance.date" readonly class="readonly-input">
           </div>
           <div class="input-group">
             <label>Working Hours</label>
@@ -89,12 +89,23 @@
       </div>
       
       <div class="card-form mb-4">
-        <div class="form-grid">
-          <input type="text" [(ngModel)]="newCustomer.name" placeholder="Customer Name">
-          <input type="text" [(ngModel)]="newCustomer.phone" placeholder="Phone Number">
-          <input type="email" [(ngModel)]="newCustomer.email" placeholder="Email (Optional)">
-          <button class="btn-primary" (click)="addCustomer()">Register</button>
-        </div>
+        <form #customerForm="ngForm" (ngSubmit)="customerForm.valid && addCustomer()">
+          <div class="form-grid">
+            <div class="input-group">
+              <input type="text" name="name" [(ngModel)]="newCustomer.name" placeholder="Customer Name" required #cname="ngModel">
+              <div *ngIf="cname.invalid && cname.touched" class="error-text small text-danger">Name is required</div>
+            </div>
+            <div class="input-group">
+              <input type="text" name="phone" [(ngModel)]="newCustomer.phone" placeholder="Phone (10 digits)" required pattern="[0-9]{10}" #cphone="ngModel">
+              <div *ngIf="cphone.invalid && cphone.touched" class="error-text small text-danger">Invalid phone (10 digits)</div>
+            </div>
+            <div class="input-group">
+              <input type="email" name="email" [(ngModel)]="newCustomer.email" placeholder="Email (Optional)" email #cemail="ngModel">
+              <div *ngIf="cemail.invalid && cemail.touched" class="error-text small text-danger">Invalid email</div>
+            </div>
+            <button type="submit" class="btn-primary" [disabled]="customerForm.invalid">Register</button>
+          </div>
+        </form>
       </div>
     </div>
 
@@ -156,28 +167,44 @@
         <div class="checkout-panel">
           <h3>Current Cart</h3>
           <div class="cart-items">
-            <div class="cart-item" *ngFor="let item of cart; let idx = index">
-              <div class="item-info">
-                <span class="name">{{item.product.name}} x{{item.quantity}}</span>
-                <span class="price">Rs. {{item.totalPrice}}</span>
+            <div class="cart-item" *ngFor="let item of cart; let i = index">
+              <div class="item-main">
+                <div class="item-name">{{item.product.name}}</div>
+                <div class="item-price-unit">Rs. {{item.pricePerUnit}}</div>
               </div>
-              <button class="btn-sm text-danger" (click)="removeFromCart(idx)">×</button>
+              <div class="item-controls">
+                <button class="qty-btn" (click)="updateQuantity(i, -1)">-</button>
+                <span class="qty-val">{{item.quantity}}</span>
+                <button class="qty-btn" (click)="updateQuantity(i, 1)">+</button>
+              </div>
+              <div class="item-total">
+                Rs. {{item.totalPrice}}
+              </div>
+              <button class="remove-btn" (click)="removeFromCart(i)">&times;</button>
             </div>
-            <div *ngIf="cart.length === 0" class="empty-state">Cart is empty.</div>
+            <div *ngIf="cart.length === 0" class="empty-state">
+              <div class="empty-text">🛒 Empty Cart</div>
+            </div>
           </div>
 
           <div class="checkout-summary">
             <div class="summary-line">
               <span>Subtotal</span>
-              <span>Rs. {{cartTotal}}</span>
+              <span class="val">Rs. {{cartTotal}}</span>
             </div>
-            <div class="summary-line">
-              <span>Discount (Rs.)</span>
-              <input type="number" [(ngModel)]="discount" class="discount-input">
+            <div class="summary-line discount-row">
+              <div class="discount-config">
+                <select [(ngModel)]="discountType">
+                  <option value="PERCENTAGE">Discount %</option>
+                  <option value="AMOUNT">Discount Rs.</option>
+                </select>
+                <input type="number" [(ngModel)]="discountInput" class="discount-input" placeholder="0">
+              </div>
+              <span class="val text-danger">- Rs. {{discountAmount}}</span>
             </div>
             <div class="summary-line total">
-              <span>Total</span>
-              <span>Rs. {{finalAmount}}</span>
+              <span>Final Amount</span>
+              <span class="val">Rs. {{finalAmount}}</span>
             </div>
 
             <div class="payment-mode mt-3">
@@ -197,4 +224,34 @@
     </div>
 
   </main>
+
+  <!-- QR PAYMENT MODAL -->
+  <div class="modal-overlay" *ngIf="showQRModal">
+    <div class="qr-modal animate-pop">
+      <div class="modal-header">
+        <h3>Payment Simulation</h3>
+        <button class="close-btn" (click)="showQRModal = false" [disabled]="paymentProcessing">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="qr-container" [class.paid]="paymentSuccess">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=BillPoint_Payment" alt="QR Code">
+          <p>Scan to pay <strong>Rs. {{finalAmount}}</strong></p>
+        </div>
+
+        <div class="payment-status">
+          <div *ngIf="paymentProcessing" class="processing">
+            <div class="spinner"></div>
+            <p>Processing payment...</p>
+          </div>
+          
+          <div *ngIf="paymentSuccess" class="success-msg">
+            <div class="success-icon">✓</div>
+            <h4>Payment Successful!</h4>
+            <p>Bill ID: BP-{{finalAmount + 100}}0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

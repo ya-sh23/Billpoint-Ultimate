@@ -1,16 +1,40 @@
 package com.billpoint.backend.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class SignupRequest {
+    @NotBlank
+    @Size(min = 3, max = 20)
     private String username;
+
+    @NotBlank
+    @Size(max = 50)
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "Invalid email format")
     private String email;
+
+    @NotBlank
+    @Size(min = 8, max = 40)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*#])[A-Za-z\\d!@#$%^&*#]{8,}$", 
+             message = "Password must be at least 8 characters long, contain one uppercase letter, one number and one special character")
     private String password;
+
+    @NotBlank
+    @Pattern(regexp = "^\\d{10}$", message = "Phone number must be exactly 10 digits")
     private String phone;
-    private String role; // expected to be Admin initially or set internally
+    
+    private String role; 
     
     // Shop Owner specific fields
     private String businessName;
+
+    @Pattern(regexp = "^([A-Z]{5}[0-9]{4}[A-Z]{1})?$", message = "Invalid PAN Card format")
     private String panCard;
+
+    @Pattern(regexp = "^([0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1})?$", message = "Invalid GSTIN format")
     private String gstin;
+    
     private String address;
 
     public String getUsername() { return username; }

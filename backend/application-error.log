@@ -8360,3 +8360,81 @@ Action:
 
 Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
 
+2026-03-26T01:36:18.161+05:30  INFO 16688 --- [backend] [restartedMain] c.billpoint.backend.BackendApplication   : Starting BackendApplication using Java 17.0.1 with PID 16688 (D:\billpoint_antigravity_26march\billpoint_ultimate\backend\target\classes started by anshu in D:\billpoint_antigravity_26march\billpoint_ultimate\backend)
+2026-03-26T01:36:18.168+05:30  INFO 16688 --- [backend] [restartedMain] c.billpoint.backend.BackendApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-03-26T01:36:18.331+05:30  INFO 16688 --- [backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-26T01:36:18.332+05:30  INFO 16688 --- [backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-26T01:36:20.602+05:30  INFO 16688 --- [backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-26T01:36:20.873+05:30  INFO 16688 --- [backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 234 ms. Found 11 JPA repository interfaces.
+2026-03-26T01:36:23.614+05:30  INFO 16688 --- [backend] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-03-26T01:36:23.654+05:30  INFO 16688 --- [backend] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-26T01:36:23.655+05:30  INFO 16688 --- [backend] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-26T01:36:23.843+05:30  INFO 16688 --- [backend] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-26T01:36:23.845+05:30  INFO 16688 --- [backend] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5510 ms
+2026-03-26T01:36:24.035+05:30  INFO 16688 --- [backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-26T01:36:24.455+05:30  INFO 16688 --- [backend] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6222c19b
+2026-03-26T01:36:24.459+05:30  INFO 16688 --- [backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-26T01:36:24.973+05:30  INFO 16688 --- [backend] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-26T01:36:25.173+05:30  INFO 16688 --- [backend] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-03-26T01:36:25.269+05:30  INFO 16688 --- [backend] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-26T01:36:26.000+05:30  INFO 16688 --- [backend] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-26T01:36:26.249+05:30  WARN 16688 --- [backend] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-26T01:36:29.287+05:30  INFO 16688 --- [backend] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-26T01:36:29.770+05:30  INFO 16688 --- [backend] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-26T01:36:32.116+05:30  WARN 16688 --- [backend] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-26T01:36:32.978+05:30  INFO 16688 --- [backend] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3316437a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@42cf549, org.springframework.security.web.context.SecurityContextHolderFilter@53d2d457, org.springframework.security.web.header.HeaderWriterFilter@7a790ce8, org.springframework.web.filter.CorsFilter@12f4c4ca, org.springframework.security.web.authentication.logout.LogoutFilter@7921377, com.billpoint.backend.security.AuthTokenFilter@4de0fa11, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@43119a07, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@69ea3e9d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4d905548, org.springframework.security.web.session.SessionManagementFilter@1fa54d6b, org.springframework.security.web.access.ExceptionTranslationFilter@57aac59d, org.springframework.security.web.access.intercept.AuthorizationFilter@21e2ddec]
+2026-03-26T01:36:33.831+05:30  WARN 16688 --- [backend] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : Unable to start LiveReload server
+2026-03-26T01:36:33.911+05:30  WARN 16688 --- [backend] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-03-26T01:36:33.922+05:30  INFO 16688 --- [backend] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-26T01:36:33.933+05:30  INFO 16688 --- [backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-03-26T01:36:33.958+05:30  INFO 16688 --- [backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-03-26T01:36:34.016+05:30  INFO 16688 --- [backend] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-03-26T01:36:34.096+05:30 ERROR 16688 --- [backend] [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-03-26T01:38:48.561+05:30  INFO 13448 --- [backend] [restartedMain] c.billpoint.backend.BackendApplication   : Starting BackendApplication using Java 17.0.1 with PID 13448 (D:\billpoint_antigravity_26march\billpoint_ultimate\backend\target\classes started by anshu in D:\billpoint_antigravity_26march\billpoint_ultimate\backend)
+2026-03-26T01:38:48.578+05:30  INFO 13448 --- [backend] [restartedMain] c.billpoint.backend.BackendApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-03-26T01:38:48.746+05:30  INFO 13448 --- [backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-26T01:38:48.747+05:30  INFO 13448 --- [backend] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-26T01:38:53.548+05:30  INFO 13448 --- [backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-26T01:38:54.028+05:30  INFO 13448 --- [backend] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 428 ms. Found 11 JPA repository interfaces.
+2026-03-26T01:38:57.947+05:30  INFO 13448 --- [backend] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-03-26T01:38:57.997+05:30  INFO 13448 --- [backend] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-26T01:38:57.997+05:30  INFO 13448 --- [backend] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-03-26T01:38:58.333+05:30  INFO 13448 --- [backend] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-03-26T01:38:58.335+05:30  INFO 13448 --- [backend] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 9564 ms
+2026-03-26T01:38:58.784+05:30  INFO 13448 --- [backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-26T01:38:59.502+05:30  INFO 13448 --- [backend] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@179d4ff2
+2026-03-26T01:38:59.507+05:30  INFO 13448 --- [backend] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-26T01:38:59.872+05:30  INFO 13448 --- [backend] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-26T01:39:00.177+05:30  INFO 13448 --- [backend] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-03-26T01:39:00.321+05:30  INFO 13448 --- [backend] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-26T01:39:01.247+05:30  INFO 13448 --- [backend] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-26T01:39:01.485+05:30  WARN 13448 --- [backend] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-03-26T01:39:05.584+05:30  INFO 13448 --- [backend] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-26T01:39:06.099+05:30  INFO 13448 --- [backend] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-26T01:39:09.615+05:30  WARN 13448 --- [backend] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-26T01:39:11.664+05:30  INFO 13448 --- [backend] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@646d43ec, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4924cdd5, org.springframework.security.web.context.SecurityContextHolderFilter@7b46a2a2, org.springframework.security.web.header.HeaderWriterFilter@c9f783c, org.springframework.web.filter.CorsFilter@3a18d468, org.springframework.security.web.authentication.logout.LogoutFilter@21e2ddec, com.billpoint.backend.security.AuthTokenFilter@2bd0b897, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2513b43d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@588dce73, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@67f6a205, org.springframework.security.web.session.SessionManagementFilter@37ef5899, org.springframework.security.web.access.ExceptionTranslationFilter@1b340e0a, org.springframework.security.web.access.intercept.AuthorizationFilter@1ed67652]
+2026-03-26T01:39:13.295+05:30  INFO 13448 --- [backend] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-03-26T01:39:13.518+05:30  INFO 13448 --- [backend] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2026-03-26T01:39:13.575+05:30  INFO 13448 --- [backend] [restartedMain] c.billpoint.backend.BackendApplication   : Started BackendApplication in 27.113 seconds (process running for 29.697)
+2026-03-26T01:53:00.205+05:30  INFO 13448 --- [backend] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-26T01:53:00.207+05:30  INFO 13448 --- [backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-26T01:53:00.405+05:30  INFO 13448 --- [backend] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 198 ms
+2026-03-26T02:04:03.306+05:30  WARN 13448 --- [backend] [http-nio-8080-exec-10] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<?> com.billpoint.backend.controller.AuthController.registerUser(com.billpoint.backend.dto.SignupRequest): [Field error in object 'signupRequest' on field 'password': rejected value [Ambrish123#$#]; codes [Pattern.signupRequest.password,Pattern.password,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [signupRequest.password,password]; arguments []; default message [password],[Ljakarta.validation.constraints.Pattern$Flag;@74c7ce7d,^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$]; default message [Password must be at least 8 characters long, contain one uppercase letter, one number and one special character]] ]
+2026-03-26T02:11:50.084+05:30  INFO 13448 --- [backend] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-26T02:11:50.091+05:30  INFO 13448 --- [backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-03-26T02:11:50.102+05:30  INFO 13448 --- [backend] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

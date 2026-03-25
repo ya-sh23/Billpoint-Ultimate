@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-shop-owner-dashboard',
@@ -29,7 +30,11 @@ export class ShopOwnerDashboardComponent implements OnInit {
 
   private apiUrl = 'http://localhost:8080/api';
 
-  constructor(public authService: AuthService, private http: HttpClient) {}
+  constructor(
+    public authService: AuthService, 
+    private http: HttpClient,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadShopProfile();
@@ -50,7 +55,7 @@ export class ShopOwnerDashboardComponent implements OnInit {
 
   updateAttendanceCode() {
     this.http.post(`${this.apiUrl}/shop-owner/attendance-code`, { message: this.attendanceCode }).subscribe(() => {
-      alert('Attendance code updated');
+      this.toast.success('Attendance code updated');
     });
   }
 
@@ -61,7 +66,7 @@ export class ShopOwnerDashboardComponent implements OnInit {
 
   addProduct() {
     this.http.post(`${this.apiUrl}/shop-owner/products`, this.newProduct).subscribe(() => {
-      alert('Product added');
+      this.toast.success('Product added');
       this.newProduct = {};
       this.loadProducts();
     });
@@ -81,11 +86,11 @@ export class ShopOwnerDashboardComponent implements OnInit {
   addStaff() {
     this.http.post(`${this.apiUrl}/shop-owner/staff`, this.newStaff).subscribe({
       next: () => {
-        alert('Staff added successfully');
+        this.toast.success('Staff added successfully');
         this.newStaff = {};
         this.loadStaff();
       },
-      error: (err) => alert('Error adding staff: ' + err.error?.message)
+      error: (err) => this.toast.error('Error adding staff: ' + err.error?.message)
     });
   }
 
@@ -96,7 +101,7 @@ export class ShopOwnerDashboardComponent implements OnInit {
 
   addOffer() {
     this.http.post(`${this.apiUrl}/offers`, this.newOffer).subscribe(() => {
-      alert('Offer added');
+      this.toast.success('Offer added');
       this.newOffer = {};
       this.loadOffers();
     });

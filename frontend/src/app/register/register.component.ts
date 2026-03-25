@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -25,17 +26,18 @@ export class RegisterComponent {
     address: ''
   };
 
-  message = '';
-  error = '';
-
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private toast: ToastService
+  ) {}
 
   onSubmit() {
 
     this.authService.register(this.form).subscribe({
 
       next: (res:any) => {
-        this.message = res.message || "Registered successfully";
+        this.toast.success(res.message || "Registered successfully! Wait for approval.");
         this.router.navigate(['/login']);
       },
 
@@ -43,7 +45,7 @@ export class RegisterComponent {
 
   console.log("Register error:", err);
 
-  this.error = err?.error?.message || "Registration failed";
+  this.toast.error(err?.error?.message || "Registration failed");
 
 }
 

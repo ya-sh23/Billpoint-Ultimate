@@ -102,13 +102,27 @@
 
       <div class="card-form mb-4">
         <h4>Register New Staff Account</h4>
-        <div class="form-grid">
-          <input type="text" [(ngModel)]="newStaff.username" placeholder="Staff Username">
-          <input type="email" [(ngModel)]="newStaff.email" placeholder="Email">
-          <input type="text" [(ngModel)]="newStaff.phone" placeholder="Phone">
-          <input type="password" [(ngModel)]="newStaff.password" placeholder="Password">
-          <button class="btn-primary" (click)="addStaff()">Register Staff</button>
-        </div>
+        <form #staffForm="ngForm" (ngSubmit)="staffForm.valid && addStaff()">
+          <div class="form-grid">
+            <div class="input-group">
+              <input type="text" name="username" [(ngModel)]="newStaff.username" placeholder="Staff Username" required #suname="ngModel">
+              <div *ngIf="suname.invalid && suname.touched" class="error-text small text-danger">Username is required</div>
+            </div>
+            <div class="input-group">
+              <input type="email" name="email" [(ngModel)]="newStaff.email" placeholder="Email" required email #semail="ngModel">
+              <div *ngIf="semail.invalid && semail.touched" class="error-text small text-danger">Invalid email</div>
+            </div>
+            <div class="input-group">
+              <input type="text" name="phone" [(ngModel)]="newStaff.phone" placeholder="Phone (10 digits)" required pattern="[0-9]{10}" #sphone="ngModel">
+              <div *ngIf="sphone.invalid && sphone.touched" class="error-text small text-danger">Invalid phone (10 digits)</div>
+            </div>
+            <div class="input-group">
+              <input type="password" name="password" [(ngModel)]="newStaff.password" placeholder="Password" required minlength="8" #spass="ngModel">
+              <div *ngIf="spass.invalid && spass.touched" class="error-text small text-danger">Min 8 chars</div>
+            </div>
+            <button type="submit" class="btn-primary" [disabled]="staffForm.invalid">Register Staff</button>
+          </div>
+        </form>
       </div>
 
       <div class="table-container">

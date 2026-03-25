@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-staff-dashboard',
@@ -20,14 +21,22 @@ export class StaffDashboardComponent implements OnInit {
   products: any[] = [];
   cart: any[] = [];
   paymentMode = 'CASH';
-  discount = 0;
+  discountInput = 0; // The amount or percentage value
+  discountType = 'PERCENTAGE'; // PERCENTAGE or AMOUNT
+  showQRModal = false;
+  paymentProcessing = false;
+  paymentSuccess = false;
 
   // New Customer
   newCustomer: any = {};
 
   private apiUrl = 'http://localhost:8080/api';
 
-  constructor(public authService: AuthService, private http: HttpClient) {}
+  constructor(
+    public authService: AuthService, 
+    private http: HttpClient,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadAttendance();
@@ -65,21 +74,26 @@ export class StaffDashboardComponent implements OnInit {
   }
 
   markAttendance() {
+    if (this.attendance.workingHours < 0 || this.attendance.workingHours > 9) {
+      this.toast.error('Working hours must be between 0 and 9.');
+      return;
+    }
+
     this.http.get<any>(`${this.apiUrl}/staff/profile`).subscribe({
       next: (staff) => {
         const payload = {
           staff: { id: staff.id },
-          date: this.attendance.date,
+          date: new Date().toISOString().split('T')[0], // Enforce today's date
           workingHours: this.attendance.workingHours,
           attendanceCode: this.attendance.attendanceCode
         };
         this.http.post(`${this.apiUrl}/attendance/mark`, payload).subscribe({
           next: (res: any) => {
-            alert(res.message);
+            this.toast.success(res.message);
             this.attendance.attendanceCode = '';
             this.loadAttendance();
           },
-          error: (err) => alert(err.error?.message || 'Error marking attendance')
+          error: (err) => this.toast.error(err.error?.message || 'Error marking attendance')
         });
       }
     });
@@ -94,7 +108,7 @@ export class StaffDashboardComponent implements OnInit {
         a.download = `invoice_${billId}.pdf`;
         a.click();
       },
-      error: (err) => alert('Error downloading invoice: ' + err.error?.message)
+      error: (err) => this.toast.error('Error downloading invoice: ' + err.error?.message)
     });
   }
 
@@ -103,21 +117,21 @@ export class StaffDashboardComponent implements OnInit {
     this.http.get<any>(`${this.apiUrl}/staff/customers/search?phone=${this.customerPhoneSearch}`).subscribe({
       next: (data) => {
         this.selectedCustomer = data;
-        alert('Customer found: ' + data.name);
+        this.toast.success('Customer found: ' + data.name);
       },
-      error: () => alert('Customer not found')
+      error: () => this.toast.error('Customer not found')
     });
   }
 
   addCustomer() {
     this.http.post<any>(`${this.apiUrl}/staff/customers`, this.newCustomer).subscribe({
       next: (data) => {
-        alert('Customer registered successfully!');
+        this.toast.success('Customer registered successfully!');
         this.selectedCustomer = data;
         this.newCustomer = {};
         this.activeTab = 'billing'; // go back to billing
       },
-      error: (err) => alert('Error: ' + err.error?.message)
+      error: (err) => this.toast.error('Error: ' + err.error?.message)
     });
   }
 
@@ -137,6 +151,16 @@ export class StaffDashboardComponent implements OnInit {
     }
   }
 
+  updateQuantity(index: number, delta: number) {
+    const item = this.cart[index];
+    item.quantity += delta;
+    if (item.quantity <= 0) {
+      this.removeFromCart(index);
+    } else {
+      item.totalPrice = item.quantity * item.pricePerUnit;
+    }
+  }
+
   removeFromCart(index: number) {
     this.cart.splice(index, 1);
   }
@@ -145,24 +169,59 @@ export class StaffDashboardComponent implements OnInit {
     return this.cart.reduce((sum, item) => sum + item.totalPrice, 0);
   }
 
+  get discountAmount() {
+    if (this.discountType === 'PERCENTAGE') {
+      return (this.cartTotal * this.discountInput) / 100;
+    }
+    return this.discountInput;
+  }
+
   get finalAmount() {
-    return this.cartTotal - this.discount;
+    return Math.max(0, this.cartTotal - this.discountAmount);
   }
 
   generateBill() {
     if (!this.selectedCustomer) {
-      alert('Please select or create a customer first.');
+      this.toast.warning('Please select or create a customer first.');
       return;
     }
     if (this.cart.length === 0) {
-      alert('Cart is empty.');
+      this.toast.warning('Cart is empty.');
       return;
     }
 
+    if (this.paymentMode === 'UPI' || this.paymentMode === 'CARD') {
+      this.initiateQRPayment();
+    } else {
+      this.processBill();
+    }
+  }
+
+  initiateQRPayment() {
+    this.showQRModal = true;
+    this.paymentProcessing = true;
+    this.paymentSuccess = false;
+
+    // Simulate 3s payment processing
+    setTimeout(() => {
+      this.paymentProcessing = false;
+      this.paymentSuccess = true;
+      this.toast.success('Payment Successful!');
+      
+      // Auto-close and process after 1.5s success view
+      setTimeout(() => {
+        this.showQRModal = false;
+        this.processBill();
+      }, 1500);
+    }, 3000);
+  }
+
+  processBill() {
     const payload = {
       customerId: this.selectedCustomer.id,
       totalAmount: this.cartTotal,
-      discount: this.discount,
+      discount: this.discountAmount,
+      discountPercentage: this.discountType === 'PERCENTAGE' ? this.discountInput : null,
       finalAmount: this.finalAmount,
       paymentMode: this.paymentMode,
       items: this.cart
@@ -170,14 +229,14 @@ export class StaffDashboardComponent implements OnInit {
 
     this.http.post(`${this.apiUrl}/staff/bills`, payload).subscribe({
       next: (res: any) => {
-        alert(res.message);
+        this.toast.success(res.message);
         this.cart = [];
         this.selectedCustomer = null;
         this.customerPhoneSearch = '';
-        this.discount = 0;
+        this.discountInput = 0;
         this.loadRecentBills();
       },
-      error: (err) => alert('Error creating bill: ' + err.error?.message)
+      error: (err) => this.toast.error('Error creating bill: ' + err.error?.message)
     });
   }
 

@@ -59,6 +59,12 @@ public class AttendanceController {
              return ResponseEntity.badRequest().body(new MessageResponse("Error: Shop has not set an attendance code, but one was provided."));
         }
 
+        // Enforce current date and validate working hours (0-9)
+        attendance.setDate(LocalDate.now());
+        if (attendance.getWorkingHours() == null || attendance.getWorkingHours() < 0 || attendance.getWorkingHours() > 9) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Working hours must be between 0 and 9."));
+        }
+
         attendance.setStaff(staff);
         attendance.setShop(staff.getShop());
         attendance.setStatus("PRESENT");

@@ -8,6 +8,7 @@ public class BillRequest {
     private Long customerId;
     private BigDecimal totalAmount;
     private BigDecimal discount;
+    private BigDecimal discountPercentage;
     private BigDecimal finalAmount;
     private String paymentMode;
     private List<BillItem> items;
@@ -20,6 +21,9 @@ public class BillRequest {
 
     public BigDecimal getDiscount() { return discount; }
     public void setDiscount(BigDecimal discount) { this.discount = discount; }
+
+    public BigDecimal getDiscountPercentage() { return discountPercentage; }
+    public void setDiscountPercentage(BigDecimal discountPercentage) { this.discountPercentage = discountPercentage; }
 
     public BigDecimal getFinalAmount() { return finalAmount; }
     public void setFinalAmount(BigDecimal finalAmount) { this.finalAmount = finalAmount; }
