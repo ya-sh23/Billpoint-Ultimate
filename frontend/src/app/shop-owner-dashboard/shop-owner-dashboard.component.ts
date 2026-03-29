@@ -137,11 +137,18 @@ export class ShopOwnerDashboardComponent implements OnInit {
 
   downloadDateReport() {
     this.http.get(`${this.apiUrl}/reports/download/sales?startDate=${this.reportStartDate}&endDate=${this.reportEndDate}`, { responseType: 'blob' }).subscribe(blob => {
-      const url = window.URL.createObjectURL(blob);
+      const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
       const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.style.display = 'none';
       a.href = url;
       a.download = `sales_report_${this.reportStartDate}_to_${this.reportEndDate}.pdf`;
       a.click();
+      
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }, 100);
     });
   }
 

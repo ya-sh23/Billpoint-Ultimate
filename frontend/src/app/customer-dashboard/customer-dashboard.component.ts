@@ -41,11 +41,15 @@ export class CustomerDashboardComponent implements OnInit {
   downloadInvoice(billId: number) {
     this.http.get(`${this.apiUrl}/bills/${billId}/invoice`, { responseType: 'blob' }).subscribe({
       next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
+        const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
         const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style.display = 'none';
         a.href = url;
         a.download = `invoice_${billId}.pdf`;
         a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
       },
       error: (err) => alert('Error downloading invoice: ' + err.error?.message)
     });

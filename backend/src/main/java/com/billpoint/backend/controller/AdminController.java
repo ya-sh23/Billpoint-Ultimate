@@ -159,7 +159,9 @@ package com.billpoint.backend.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -204,7 +206,7 @@ public class AdminController {
 
     // ✅ APPROVE REQUEST
     @PostMapping("/requests/{id}/approve")
-    public ResponseEntity<?> approveRequest(@PathVariable Long id,
+    public ResponseEntity<?> approveRequest(@PathVariable("id") Long id,
                                             @RequestBody ApprovalRequest approvalRequest) {
 
         Optional<ShopRequest> requestOpt = shopRequestRepository.findById(id);
@@ -229,12 +231,16 @@ public class AdminController {
         if (existingUser.isPresent()) {
             owner = existingUser.get();
             owner.setIsActive(true); // ✅ APPROVED
+            if (owner.getUid() == null) {
+                owner.setUid(generate6DigitId());
+            }
         } else {
             // CREATE NEW USER (fallback)
             String defaultPassword = "password123";
             String username = request.getEmail().split("@")[0] + "_" + System.currentTimeMillis() % 1000;
 
             owner = new User();
+            owner.setUid(generate6DigitId());
             owner.setUsername(username);
             owner.setEmail(request.getEmail());
             owner.setPhone(request.getPhone());
@@ -293,7 +299,7 @@ public class AdminController {
 
     // ✅ REJECT
     @PostMapping("/requests/{id}/reject")
-    public ResponseEntity<?> rejectRequest(@PathVariable Long id) {
+    public ResponseEntity<?> rejectRequest(@PathVariable("id") Long id) {
 
         Optional<ShopRequest> requestOpt = shopRequestRepository.findById(id);
 
@@ -316,6 +322,20 @@ public class AdminController {
     // ✅ GET SHOPS
     @GetMapping("/shops")
     public ResponseEntity<?> getAllShops() {
-        return ResponseEntity.ok(shopRepository.findAll());
+        List<Shop> shops = shopRepository.findAll();
+        for (Shop shop : shops) {
+            User owner = shop.getOwner();
+            if (owner != null && owner.getUid() == null) {
+                owner.setUid(generate6DigitId());
+                userRepository.save(owner);
+            }
+        }
+        return ResponseEntity.ok(shops);
+    }
+
+    private String generate6DigitId() {
+        Random rnd = new Random();
+        int number = rnd.nextInt(900000) + 100000;
+        return String.valueOf(number);
     }
 }

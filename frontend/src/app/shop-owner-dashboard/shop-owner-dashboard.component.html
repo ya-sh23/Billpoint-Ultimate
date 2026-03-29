@@ -46,13 +46,27 @@
       
       <div class="card-form mb-4">
         <h4>Add New Product</h4>
-        <div class="form-grid">
-          <input type="text" [(ngModel)]="newProduct.name" placeholder="Product Name">
-          <input type="text" [(ngModel)]="newProduct.sku" placeholder="SKU">
-          <input type="number" [(ngModel)]="newProduct.price" placeholder="Price">
-          <input type="number" [(ngModel)]="newProduct.stockQuantity" placeholder="Stock Qty">
-          <button class="btn-primary" (click)="addProduct()">Add Product</button>
-        </div>
+        <form #productForm="ngForm" (ngSubmit)="productForm.valid && addProduct()">
+          <div class="form-grid">
+            <div class="input-group">
+              <input type="text" name="name" [(ngModel)]="newProduct.name" placeholder="Product Name" required #pname="ngModel">
+              <div *ngIf="pname.invalid && pname.touched" class="error-text small text-danger">Required</div>
+            </div>
+            <div class="input-group">
+              <input type="text" name="sku" [(ngModel)]="newProduct.sku" placeholder="SKU" required #psku="ngModel">
+              <div *ngIf="psku.invalid && psku.touched" class="error-text small text-danger">Required</div>
+            </div>
+            <div class="input-group">
+              <input type="number" name="price" [(ngModel)]="newProduct.price" placeholder="Price" required min="0" #pprice="ngModel">
+              <div *ngIf="pprice.invalid && pprice.touched" class="error-text small text-danger">Min 0</div>
+            </div>
+            <div class="input-group">
+              <input type="number" name="stock" [(ngModel)]="newProduct.stockQuantity" placeholder="Stock Qty" required min="0" #pstock="ngModel">
+              <div *ngIf="pstock.invalid && pstock.touched" class="error-text small text-danger">Min 0</div>
+            </div>
+            <button type="submit" class="btn-primary" [disabled]="productForm.invalid">Add Product</button>
+          </div>
+        </form>
       </div>
 
       <div class="table-container">
@@ -94,8 +108,11 @@
       <div class="card-form mb-4">
         <h4>Daily Attendance Security Code</h4>
         <div class="form-grid">
-          <input type="text" [(ngModel)]="attendanceCode" placeholder="Enter daily code (e.g. SHOP123)">
-          <button class="btn-primary" (click)="updateAttendanceCode()">Set Today's Code</button>
+          <div class="input-group">
+            <input type="text" [(ngModel)]="attendanceCode" placeholder="Enter daily code (e.g. SHOP123)" required #acode="ngModel">
+            <div *ngIf="acode.invalid && acode.touched" class="error-text small text-danger">Code required</div>
+          </div>
+          <button class="btn-primary" (click)="updateAttendanceCode()" [disabled]="!attendanceCode">Set Today's Code</button>
         </div>
         <p class="text-muted small mt-2">Staff must enter this code to mark their attendance for today.</p>
       </div>
@@ -105,19 +122,19 @@
         <form #staffForm="ngForm" (ngSubmit)="staffForm.valid && addStaff()">
           <div class="form-grid">
             <div class="input-group">
-              <input type="text" name="username" [(ngModel)]="newStaff.username" placeholder="Staff Username" required #suname="ngModel">
+              <input type="text" name="username" [(ngModel)]="newStaff.username" placeholder="Staff Username" required #suname="ngModel" maxlength="25">
               <div *ngIf="suname.invalid && suname.touched" class="error-text small text-danger">Username is required</div>
             </div>
             <div class="input-group">
-              <input type="email" name="email" [(ngModel)]="newStaff.email" placeholder="Email" required email #semail="ngModel">
+              <input type="email" name="email" [(ngModel)]="newStaff.email" placeholder="Email" required email #semail="ngModel" >
               <div *ngIf="semail.invalid && semail.touched" class="error-text small text-danger">Invalid email</div>
             </div>
             <div class="input-group">
-              <input type="text" name="phone" [(ngModel)]="newStaff.phone" placeholder="Phone (10 digits)" required pattern="[0-9]{10}" #sphone="ngModel">
-              <div *ngIf="sphone.invalid && sphone.touched" class="error-text small text-danger">Invalid phone (10 digits)</div>
+              <input type="text" name="phone" [(ngModel)]="newStaff.phone" placeholder="Phone (10 digits)" required pattern="[6-9]{1}[0-9]{9}" #sphone="ngModel" maxlength="10">
+              <div *ngIf="sphone.invalid && sphone.touched" class="error-text small text-danger">Invalid phone</div>
             </div>
             <div class="input-group">
-              <input type="password" name="password" [(ngModel)]="newStaff.password" placeholder="Password" required minlength="8" #spass="ngModel">
+              <input type="password" name="password" [(ngModel)]="newStaff.password" placeholder="Password" required minlength="8" #spass="ngModel" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}">
               <div *ngIf="spass.invalid && spass.touched" class="error-text small text-danger">Min 8 chars</div>
             </div>
             <button type="submit" class="btn-primary" [disabled]="staffForm.invalid">Register Staff</button>
@@ -154,13 +171,25 @@
 
       <div class="card-form mb-4">
         <h4>Create New Offer</h4>
-        <div class="form-grid">
-          <input type="text" [(ngModel)]="newOffer.title" placeholder="Offer Title (e.g., Summer Sale)">
-          <input type="number" [(ngModel)]="newOffer.discountPercentage" placeholder="Discount %">
-          <input type="date" [(ngModel)]="newOffer.validFrom" placeholder="Valid From">
-          <input type="date" [(ngModel)]="newOffer.validTo" placeholder="Valid To">
-          <button class="btn-primary" (click)="addOffer()">Publish Offer</button>
-        </div>
+        <form #offerForm="ngForm" (ngSubmit)="offerForm.valid && addOffer()">
+          <div class="form-grid">
+            <div class="input-group">
+              <input type="text" name="title" [(ngModel)]="newOffer.title" placeholder="Offer Title" required #otitle="ngModel">
+              <div *ngIf="otitle.invalid && otitle.touched" class="error-text small text-danger">Required</div>
+            </div>
+            <div class="input-group">
+              <input type="number" name="discount" [(ngModel)]="newOffer.discountPercentage" placeholder="Discount %" required min="1" max="100" #odiscount="ngModel">
+              <div *ngIf="odiscount.invalid && odiscount.touched" class="error-text small text-danger">1-100%</div>
+            </div>
+            <div class="input-group">
+              <input type="date" name="from" [(ngModel)]="newOffer.validFrom" placeholder="Valid From" required #ofrom="ngModel">
+            </div>
+            <div class="input-group">
+              <input type="date" name="to" [(ngModel)]="newOffer.validTo" placeholder="Valid To" required #oto="ngModel">
+            </div>
+            <button type="submit" class="btn-primary" [disabled]="offerForm.invalid">Publish Offer</button>
+          </div>
+        </form>
       </div>
 
       <div class="table-container">

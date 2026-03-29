@@ -1,251 +1,102 @@
-// /* Inherits layout from the shared approach similar to Admin Dashboard */
-// @import '../admin-dashboard/admin-dashboard.component.scss';
-
-// .mb-4 {
-//   margin-bottom: 30px;
-// }
-
-// .card-form {
-//   background: white;
-//   padding: 24px;
-//   border-radius: 12px;
-//   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-//   border-left: 4px solid #10b981;
-  
-//   h4 {
-//     margin: 0 0 20px 0;
-//     font-size: 18px;
-//     color: #1e293b;
-//   }
-// }
-
-// .form-grid {
-//   display: flex;
-//   flex-wrap: wrap;
-//   gap: 16px;
-  
-//   input {
-//     flex: 1;
-//     min-width: 200px;
-//     padding: 12px;
-//     border: 1px solid #cbd5e1;
-//     border-radius: 8px;
-//     font-size: 14px;
-    
-//     &:focus {
-//       outline: none;
-//       border-color: #10b981;
-//       box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-//     }
-//   }
-  
-//   .btn-primary {
-//     padding: 0 24px;
-//     background: #10b981;
-//     color: white;
-//     font-weight: 600;
-    
-//     &:hover {
-//       background: #059669;
-//     }
-//   }
-// }
-
-// .card-action {
-//   background: white;
-//   padding: 30px;
-//   border-radius: 12px;
-//   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-//   text-align: center;
-  
-//   p {
-//     color: #64748b;
-//     margin-bottom: 20px;
-//   }
-  
-//   .btn-primary {
-//     background: #f59e0b;
-//     color: white;
-//     padding: 14px 28px;
-//     font-size: 16px;
-    
-//     &:hover {
-//       background: #d97706;
-//     }
-//   }
-// }
-
-// .text-danger { color: #dc2626; }
-// .text-success { color: #059669; }
-// .fw-bold { font-weight: 700; }
-
-// .header-action-row {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   margin-bottom: 30px;
-  
-//   h3 { margin: 0; font-size: 24px; color: #0f172a; }
-// }
-
-// .sidebar .sidebar-header .role-badge {
-//   background: rgba(16, 185, 129, 0.2);
-//   color: #34d399;
-// }
-
-// .sidebar .nav-menu .nav-item.active {
-//     background: #10b981;
-//     box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-// }
-
-
-/* Inherits dashboard theme */
+/* Inherits layout from the shared approach similar to Admin Dashboard */
 @import '../admin-dashboard/admin-dashboard.component.scss';
 
 .mb-4 {
-  margin-bottom: 28px;
+  margin-bottom: 30px;
+}
+.mt-4 {
+  margin-top: 30px;
 }
 
-/* 💎 Form Card */
 .card-form {
-  background: rgba(10, 10, 10, 0.75);
-  backdrop-filter: blur(10px);
-
+  background: white;
   padding: 24px;
-  border-radius: 14px;
-
-  border: 1px solid rgba(34, 197, 94, 0.1);
-
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6);
-
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #10b981;
+  
   h4 {
-    margin-bottom: 18px;
-    font-size: 17px;
-    color: #ecfdf5;
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    color: #0f172a;
   }
 }
 
-/* 🧾 Form Grid */
 .form-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
-
+  gap: 16px;
+  
   input {
     flex: 1;
     min-width: 200px;
-
-    padding: 11px 12px;
-    border-radius: 10px;
-
-    border: 1px solid #064e3b;
-    background: #020617;
-    color: #e5e7eb;
-
-    font-size: 13px;
-
-    transition: all 0.25s ease;
-
-    &::placeholder {
-      color: #6b7280;
-    }
-
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    
     &:focus {
       outline: none;
-      border-color: #22c55e;
-      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.25);
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
     }
   }
-
+  
   .btn-primary {
-    padding: 0 22px;
-    border-radius: 10px;
-
-    background: linear-gradient(135deg, #16a34a, #22c55e);
-    color: #022c22;
-
+    padding: 12px 24px;
+    background: #10b981;
+    color: white;
     font-weight: 600;
-    transition: all 0.25s;
-
+    
     &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(34, 197, 94, 0.3);
+      background: #059669;
     }
   }
 }
 
-/* ⚡ Action Card */
 .card-action {
-  background: rgba(10, 10, 10, 0.75);
-  backdrop-filter: blur(10px);
-
-  padding: 28px;
-  border-radius: 14px;
-
-  border: 1px solid rgba(34, 197, 94, 0.1);
-
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   text-align: center;
-
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6);
-
+  
   p {
-    color: #9ca3af;
-    margin-bottom: 18px;
-    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 20px;
   }
-
+  
   .btn-primary {
-    background: linear-gradient(135deg, #22c55e, #4ade80);
-    color: #022c22;
-
-    padding: 12px 26px;
-    border-radius: 10px;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    transition: all 0.25s;
-
+    background: #f59e0b;
+    color: white;
+    padding: 14px 28px;
+    font-size: 16px;
+    
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(34, 197, 94, 0.35);
+      background: #d97706;
     }
   }
 }
 
-/* 🎯 Text Utilities */
-.text-danger {
-  color: #f87171;
-}
+.text-danger { color: #dc2626; }
+.text-success { color: #059669; }
+.fw-bold { font-weight: 700; }
 
-.text-success {
-  color: #4ade80;
-}
-
-.fw-bold {
-  font-weight: 700;
-}
-
-/* 🧭 Header Row */
 .header-action-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
-
-  h3 {
-    font-size: 22px;
-    color: #f0fdf4;
-  }
+  margin-bottom: 30px;
+  
+  h3 { margin: 0; font-size: 24px; color: #0f172a; }
 }
 
-/* 🧩 Sidebar Overrides (match theme) */
 .sidebar .sidebar-header .role-badge {
-  background: rgba(34, 197, 94, 0.15);
-  color: #4ade80;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
 }
 
 .sidebar .nav-menu .nav-item.active {
-  background: linear-gradient(135deg, #16a34a, #22c55e);
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.3);
-}
+    background: #10b981;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}

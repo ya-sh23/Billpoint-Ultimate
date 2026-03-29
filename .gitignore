@@ -1,0 +1,10 @@
+# Project-wide ignores
+.idea/
+.vscode/
+.history/
+*.log
+.DS_Store
+Thumbs.db
+node_modules/
+target/
+dist/

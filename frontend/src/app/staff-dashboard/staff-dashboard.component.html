@@ -46,13 +46,15 @@
           </div>
           <div class="input-group">
             <label>Working Hours</label>
-            <input type="number" [(ngModel)]="attendance.workingHours" placeholder="Enter hours">
+            <input type="number" [(ngModel)]="attendance.workingHours" placeholder="Enter hours" min="0" max="24" required #whours="ngModel">
+            <div *ngIf="whours.invalid && whours.touched" class="error-text small text-danger">Enter 0-24 hrs</div>
           </div>
           <div class="input-group">
             <label>Security Code</label>
-            <input type="text" [(ngModel)]="attendance.attendanceCode" placeholder="Enter daily code">
+            <input type="text" [(ngModel)]="attendance.attendanceCode" placeholder="Enter daily code" required #acode="ngModel">
+            <div *ngIf="acode.invalid && acode.touched" class="error-text small text-danger">Code required</div>
           </div>
-          <button class="btn-primary mt-4" (click)="markAttendance()">Submit Attendance</button>
+          <button class="btn-primary mt-4 " (click)="markAttendance()">Submit Attendance</button>
         </div>
       </div>
 
@@ -115,7 +117,7 @@
         <!-- Main POS Area (Products) -->
         <div class="pos-products">
           <div class="customer-search mb-4">
-            <input type="text" [(ngModel)]="customerPhoneSearch" placeholder="Search Customer by Phone">
+            <input type="text" [(ngModel)]="customerPhoneSearch" placeholder="Search Customer by Phone" maxlength="10">
             <button class="btn-primary" (click)="searchCustomer()">Find</button>
           </div>
 
@@ -198,7 +200,7 @@
                   <option value="PERCENTAGE">Discount %</option>
                   <option value="AMOUNT">Discount Rs.</option>
                 </select>
-                <input type="number" [(ngModel)]="discountInput" class="discount-input" placeholder="0">
+                <input type="number" [(ngModel)]="discountInput" class="discount-input" placeholder="0" min="0" [max]="discountType === 'PERCENTAGE' ? 100 : cartTotal">
               </div>
               <span class="val text-danger">- Rs. {{discountAmount}}</span>
             </div>
@@ -229,7 +231,7 @@
   <div class="modal-overlay" *ngIf="showQRModal">
     <div class="qr-modal animate-pop">
       <div class="modal-header">
-        <h3>Payment Simulation</h3>
+        <h3>UPI Payment Simulation</h3>
         <button class="close-btn" (click)="showQRModal = false" [disabled]="paymentProcessing">&times;</button>
       </div>
       
@@ -249,6 +251,58 @@
             <div class="success-icon">✓</div>
             <h4>Payment Successful!</h4>
             <p>Bill ID: BP-{{finalAmount + 100}}0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD PAYMENT MODAL -->
+  <div class="modal-overlay" *ngIf="showCardModal">
+    <div class="payment-modal card-payment-modal animate-pop">
+      <div class="modal-header">
+        <h3>Card Payment</h3>
+        <button class="close-btn" (click)="showCardModal = false" [disabled]="paymentProcessing">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="amount-display">
+          <span>Amount to Pay:</span>
+          <span class="price">Rs. {{finalAmount}}</span>
+        </div>
+
+        <div class="card-form-simulation" *ngIf="!paymentSuccess">
+          <div class="input-group">
+            <label>Card Number</label>
+            <input type="text" maxlength="16" [(ngModel)]="cardDetails.number" placeholder="XXXX XXXX XXXX XXXX">
+          </div>
+          <div class="form-row">
+            <div class="input-group">
+              <label>Expiry (MM/YY)</label>
+              <input type="text" maxlength="5" [(ngModel)]="cardDetails.expiry" placeholder="MM/YY">
+            </div>
+            <div class="input-group">
+              <label>CVV</label>
+              <input type="password" maxlength="3" [(ngModel)]="cardDetails.cvv" placeholder="123">
+            </div>
+          </div>
+          <div class="input-group otp-group">
+            <label>Enter 6-Digit OTP</label>
+            <input type="text" maxlength="6" [(ngModel)]="cardDetails.otp" placeholder="123456">
+            <small class="text-muted">Use static OTP for testing.</small>
+          </div>
+
+          <button class="btn-primary w-100 mt-3" (click)="verifyCardPayment()" [disabled]="paymentProcessing">
+            <span *ngIf="!paymentProcessing">Verify & Pay</span>
+            <span *ngIf="paymentProcessing" class="spinner"></span>
+          </button>
+        </div>
+
+        <div class="payment-status mt-4" *ngIf="paymentSuccess">
+          <div class="success-msg">
+            <div class="success-icon">✓</div>
+            <h4>Payment Successful!</h4>
+            <p>Generating Invoice...</p>
           </div>
         </div>
       </div>

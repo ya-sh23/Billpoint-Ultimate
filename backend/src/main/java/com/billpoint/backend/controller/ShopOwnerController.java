@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -84,20 +85,59 @@ public class ShopOwnerController {
     }
 
     @PostMapping("/products")
-    public ResponseEntity<?> addProduct(@RequestBody Product product, Authentication authentication) {
+    public ResponseEntity<?> addProduct(@Valid @RequestBody Product product, Authentication authentication) {
 
         Shop shop = getAuthShop(authentication);
 
+        // 🔥 SMART RESTOCK & ADDITIVE STOCK LOGIC
+        java.util.List<Product> existing = productRepository.findByShop_IdAndSku(shop.getId(), product.getSku());
+        
+        if (!existing.isEmpty()) {
+            // Case 1: EXACT MATCH (Name, SKU, Price) -> Increment Stock
+            Optional<Product> exactMatch = existing.stream()
+                .filter(p -> p.getName().equalsIgnoreCase(product.getName()) && 
+                            p.getPrice().compareTo(product.getPrice()) == 0)
+                .findFirst();
+
+            if (exactMatch.isPresent()) {
+                Product p = exactMatch.get();
+                p.setStockQuantity(p.getStockQuantity() + product.getStockQuantity());
+                p.setCreatedAt(LocalDateTime.now());
+                productRepository.save(p);
+                return ResponseEntity.ok(new MessageResponse("Stock updated successfully for SKU " + p.getSku()));
+            }
+
+            // Case 2: SKU matches but Stock > 0 (Different Name or Price) -> Block Duplicate
+            Optional<Product> activeProduct = existing.stream()
+                .filter(p -> p.getStockQuantity() > 0)
+                .findFirst();
+
+            if (activeProduct.isPresent()) {
+                Product p = activeProduct.get();
+                return ResponseEntity.badRequest()
+                    .body(new MessageResponse("Error: Product SKU " + product.getSku() + " already has active stock with different name/price (#" + p.getId() + ")"));
+            }
+
+            // Case 3: All SKU entries have 0 stock -> Update the first one found
+            Product toUpdate = existing.get(0);
+            toUpdate.setName(product.getName());
+            toUpdate.setPrice(product.getPrice());
+            toUpdate.setStockQuantity(product.getStockQuantity());
+            toUpdate.setCreatedAt(LocalDateTime.now());
+            productRepository.save(toUpdate);
+            
+            return ResponseEntity.ok(new MessageResponse("Product SKU " + product.getSku() + " restocked successfully (Entry #" + toUpdate.getId() + ")"));
+        }
+
         product.setShop(shop);
         product.setCreatedAt(LocalDateTime.now());
-
         productRepository.save(product);
 
         return ResponseEntity.ok(new MessageResponse("Product added successfully"));
     }
 
     @DeleteMapping("/products/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id) {
 
         productRepository.deleteById(id);
 
@@ -115,7 +155,7 @@ public class ShopOwnerController {
     }
 
     @PostMapping("/staff")
-    public ResponseEntity<?> addStaff(@RequestBody User staffUserRequest, Authentication authentication) {
+    public ResponseEntity<?> addStaff(@Valid @RequestBody User staffUserRequest, Authentication authentication) {
 
         Shop shop = getAuthShop(authentication);
 
@@ -151,7 +191,7 @@ public class ShopOwnerController {
     // ---------------- Attendance ----------------
 
     @GetMapping("/attendance/{date}")
-    public ResponseEntity<?> getAttendanceForDate(@PathVariable String date, Authentication authentication) {
+    public ResponseEntity<?> getAttendanceForDate(@PathVariable("date") String date, Authentication authentication) {
 
         Shop shop = getAuthShop(authentication);
 

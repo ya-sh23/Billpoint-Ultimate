@@ -1,3 +1,16 @@
+<header class="app-header">
+  <div routerLink="/" class="logo-section">
+    <h1>BillPoint</h1>
+  </div>
+  <nav class="desktop-nav">
+    <a href="/">Home</a>
+    <a href="/#pricing">Pricing</a>
+
+    <a routerLink="/register" class="nav-link">Sign Up</a>
+    <button routerLink="/login" class="btn-primary login-btn">Login</button>
+  </nav>
+</header>
+
 <div class="login-wrapper">
   <div class="logo-top">
     
@@ -24,6 +37,7 @@
           placeholder="e.g. john_doe"
           required
           #uname="ngModel"
+          maxlength="25"
         />
         <div *ngIf="uname.invalid && uname.touched" class="error-text">Username is required.</div>
       </div>
@@ -38,6 +52,7 @@
           required
           pattern="[0-9]{10}"
           #phone="ngModel"
+          maxlength="10"
         />
         <div *ngIf="phone.errors?.['pattern'] && phone.touched" class="error-text">Phone must be exactly 10 digits.</div>
         <div *ngIf="phone.errors?.['required'] && phone.touched" class="error-text">Phone is required.</div>
@@ -53,6 +68,7 @@
           required
           email
           #email="ngModel"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
         />
         <div *ngIf="email.errors?.['email'] && email.touched" class="error-text">Invalid email format.</div>
         <div *ngIf="email.errors?.['required'] && email.touched" class="error-text">Email is required.</div>
@@ -86,19 +102,19 @@
       <div *ngIf="form.role === 'SHOP_OWNER'" class="owner-fields">
         <div class="input-group">
           <label>Business Name</label>
-          <input type="text" name="businessName" [(ngModel)]="form.businessName" placeholder="Enter your business name" required #bname="ngModel" />
+          <input type="text" name="businessName" [(ngModel)]="form.businessName" placeholder="Enter your business name" required #bname="ngModel" maxlength="25"/>
           <div *ngIf="bname.invalid && bname.touched" class="error-text">Business name is required.</div>
         </div>
 
         <div class="input-group">
           <label>PAN Card (ABCDE1234F)</label>
-          <input type="text" name="panCard" [(ngModel)]="form.panCard" placeholder="Enter 10-char PAN" required pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" #pan="ngModel" />
+          <input type="text" name="panCard" [(ngModel)]="form.panCard" placeholder="Enter 10-char PAN" required pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" #pan="ngModel" maxlength="10" />
           <div *ngIf="pan.errors?.['pattern'] && pan.touched" class="error-text">Invalid PAN format (e.g., ABCDE1234F).</div>
         </div>
 
         <div class="input-group">
           <label>GSTIN (15 chars)</label>
-          <input type="text" name="gstin" [(ngModel)]="form.gstin" placeholder="Enter 15-char GSTIN" required pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$" #gst="ngModel" />
+          <input type="text" name="gstin" [(ngModel)]="form.gstin" placeholder="Enter 15-char GSTIN" required pattern="^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$" #gst="ngModel" maxlength="15" />
           <div *ngIf="gst.errors?.['pattern'] && gst.touched" class="error-text">Invalid GSTIN format (e.g., 22AAAAA0000A1Z5).</div>
         </div>
 

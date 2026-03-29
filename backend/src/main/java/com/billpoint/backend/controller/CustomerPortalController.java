@@ -58,7 +58,7 @@ public class CustomerPortalController {
     }
 
     @GetMapping("/bills/{id}/invoice")
-    public ResponseEntity<byte[]> getInvoice(@PathVariable Long id, Authentication authentication) {
+    public ResponseEntity<byte[]> getInvoice(@PathVariable("id") Long id, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User user = userRepository.findById(userDetails.getId())
                 .orElseThrow(() -> new RuntimeException("Error: User not found"));

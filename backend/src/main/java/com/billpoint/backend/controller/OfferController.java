@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class OfferController {
 
     // Add new offer
     @PostMapping
-    public ResponseEntity<?> addOffer(@RequestBody Offer offer, Authentication authentication) {
+    public ResponseEntity<?> addOffer(@Valid @RequestBody Offer offer, Authentication authentication) {
 
         Long shopId = getAuthShopId(authentication);
 
@@ -68,7 +69,7 @@ public class OfferController {
 
     // Deactivate offer
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deactivateOffer(@PathVariable Long id) {
+    public ResponseEntity<?> deactivateOffer(@PathVariable("id") Long id) {
 
         offerRepository.findById(id).ifPresent(offer -> {
             offer.setIsActive(false);

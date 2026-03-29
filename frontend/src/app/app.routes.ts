@@ -8,18 +8,19 @@ import { CustomerDashboardComponent } from './customer-dashboard/customer-dashbo
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { authGuard } from './guards/auth.guard';
+
 export const routes: Routes = [
   { path: '', component: LandingComponent, pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   {
-  path: 'register',
-  loadComponent: () => import('./register/register.component')
-    .then(m => m.RegisterComponent)
-},
-  { path: 'admin-dashboard', component: AdminDashboardComponent },
-  { path: 'shop-owner-dashboard', component: ShopOwnerDashboardComponent },
-  { path: 'staff-dashboard', component: StaffDashboardComponent },
-  { path: 'customer-dashboard', component: CustomerDashboardComponent },
+    path: 'register',
+    loadComponent: () => import('./register/register.component')
+      .then(m => m.RegisterComponent)
+  },
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [authGuard] },
+  { path: 'shop-owner-dashboard', component: ShopOwnerDashboardComponent, canActivate: [authGuard] },
+  { path: 'staff-dashboard', component: StaffDashboardComponent, canActivate: [authGuard] },
+  { path: 'customer-dashboard', component: CustomerDashboardComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' }
-  
 ];

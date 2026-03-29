@@ -11,6 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "products")
@@ -24,14 +27,20 @@ public class Product {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
+    @NotBlank(message = "Product name is required")
     private String name;
-
+    
     private String description;
 
+    @NotBlank(message = "SKU is required")
     private String sku;
 
+    @NotNull(message = "Price is required")
+    @Min(value = 0, message = "Price cannot be negative")
     private BigDecimal price;
 
+    @NotNull(message = "Stock quantity is required")
+    @Min(value = 0, message = "Stock cannot be negative")
     @Column(name = "stock_quantity")
     private Integer stockQuantity;
 

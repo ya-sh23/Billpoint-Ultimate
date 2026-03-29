@@ -35,7 +35,7 @@
   <main class="main-content">
     <header class="top-header">
       <h2>Welcome, Admin!</h2>
-      <div class="date-display">{{ today | date:'mediumDate' }}</div> <!-- just visual mockup -->
+      <div class="date-display">{{ today | date:'mediumDate' }}</div> 
     </header>
 
     <div class="content-body" *ngIf="activeTab === 'requests'">
@@ -54,7 +54,7 @@
               <th>PAN / GSTIN</th>
               <th>Email</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th>Plan</th>
             </tr>
           </thead>
           <tbody>
@@ -72,14 +72,16 @@
               <td class="action-cell">
                 <ng-container *ngIf="req.status === 'PENDING'">
                   <div class="approval-form">
-                    <input type="text" [(ngModel)]="approvalPlan" placeholder="Plan (e.g., Premium)">
-                    <input type="number" [(ngModel)]="validMonths" placeholder="Months" style="width: 70px;">
-                    <button class="btn-sm btn-success" (click)="approveRequest(req.id)">Approve</button>
-                    <button class="btn-sm btn-danger" (click)="rejectRequest(req.id)">Reject</button>
+                    <div class="plan-label"><strong>12 Month Premium</strong></div>
+                    <div class="form-controls">
+                    
+                      <button class="btn-sm btn-success" (click)="approveRequest(req.id)">Approve</button>
+                      <button class="btn-sm btn-danger" (click)="rejectRequest(req.id)">Reject</button>
+                    </div>
                   </div>
                 </ng-container>
                 <div *ngIf="req.status !== 'PENDING'" class="text-muted">
-                  Resolved
+                  <strong> Active 12 Month Premium</strong>
                 </div>
               </td>
             </tr>
@@ -113,7 +115,7 @@
             <tr *ngFor="let shop of shops">
               <td>#{{ shop.id }}</td>
               <td><strong>{{ shop.name }}</strong></td>
-              <td>UID-{{ shop.ownerId }}</td>
+              <td>UID-{{ shop.owner?.uid }}</td>
               <td>{{ shop.email }}</td>
               <td>
                 <span class="status-badge active" *ngIf="shop.isActive">Active</span>

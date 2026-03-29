@@ -24,8 +24,17 @@ export class StaffDashboardComponent implements OnInit {
   discountInput = 0; // The amount or percentage value
   discountType = 'PERCENTAGE'; // PERCENTAGE or AMOUNT
   showQRModal = false;
+  showCardModal = false;
   paymentProcessing = false;
   paymentSuccess = false;
+
+  // Card Payment Details
+  cardDetails = {
+    number: '',
+    expiry: '',
+    cvv: '',
+    otp: ''
+  };
 
   // New Customer
   newCustomer: any = {};
@@ -41,6 +50,10 @@ export class StaffDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loadAttendance();
     this.loadRecentBills();
+    this.loadProducts();
+  }
+
+  loadProducts() {
     // Use dedicated staff endpoint for inventory access
     this.http.get<any[]>(`${this.apiUrl}/staff/products`).subscribe({
       next: (data) => this.products = data,
@@ -102,11 +115,19 @@ export class StaffDashboardComponent implements OnInit {
   downloadInvoice(billId: number) {
     this.http.get(`${this.apiUrl}/staff/bills/${billId}/invoice`, { responseType: 'blob' }).subscribe({
       next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
+        const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
         const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style.display = 'none';
         a.href = url;
         a.download = `invoice_${billId}.pdf`;
         a.click();
+        
+        // Delay revocation to ensure browser captures it
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }, 100);
       },
       error: (err) => this.toast.error('Error downloading invoice: ' + err.error?.message)
     });
@@ -138,6 +159,13 @@ export class StaffDashboardComponent implements OnInit {
   // --- Billing ---
   addToCart(product: any) {
     const item = this.cart.find(i => i.product.id === product.id);
+    const currentQty = item ? item.quantity : 0;
+
+    if (currentQty + 1 > product.stockQuantity) {
+      this.toast.error(`Only ${product.stockQuantity} units available in stock.`);
+      return;
+    }
+
     if (item) {
       item.quantity += 1;
       item.totalPrice = item.quantity * item.pricePerUnit;
@@ -153,6 +181,15 @@ export class StaffDashboardComponent implements OnInit {
 
   updateQuantity(index: number, delta: number) {
     const item = this.cart[index];
+    
+    if (delta > 0) {
+      const product = this.products.find(p => p.id === item.product.id);
+      if (product && item.quantity + 1 > product.stockQuantity) {
+        this.toast.error(`Only ${product.stockQuantity} units available.`);
+        return;
+      }
+    }
+
     item.quantity += delta;
     if (item.quantity <= 0) {
       this.removeFromCart(index);
@@ -170,10 +207,11 @@ export class StaffDashboardComponent implements OnInit {
   }
 
   get discountAmount() {
+    const value = this.discountInput > 0 ? this.discountInput : 0;
     if (this.discountType === 'PERCENTAGE') {
-      return (this.cartTotal * this.discountInput) / 100;
+      return (this.cartTotal * value) / 100;
     }
-    return this.discountInput;
+    return value;
   }
 
   get finalAmount() {
@@ -190,11 +228,56 @@ export class StaffDashboardComponent implements OnInit {
       return;
     }
 
-    if (this.paymentMode === 'UPI' || this.paymentMode === 'CARD') {
+    if (this.paymentMode === 'UPI') {
       this.initiateQRPayment();
+    } else if (this.paymentMode === 'CARD') {
+      this.initiateCardPayment();
     } else {
       this.processBill();
     }
+  }
+
+  initiateCardPayment() {
+    this.showCardModal = true;
+    this.paymentProcessing = false;
+    this.paymentSuccess = false;
+    this.cardDetails = { number: '', expiry: '', cvv: '', otp: '' };
+  }
+
+  verifyCardPayment() {
+    if (!this.cardDetails.number || this.cardDetails.number.length !== 16) {
+      this.toast.error('Please enter a valid 16-digit card number');
+      return;
+    }
+    if (!this.cardDetails.cvv || this.cardDetails.cvv.length !== 3) {
+      this.toast.error('Please enter a valid 3-digit CVV');
+      return;
+    }
+    if (!this.cardDetails.otp) {
+      this.toast.error('Please enter the OTP');
+      return;
+    }
+
+    this.paymentProcessing = true;
+    
+    // Simulate short processing delay
+    setTimeout(() => {
+      const validOtps = ['123456', '654321'];
+      if (validOtps.includes(this.cardDetails.otp)) {
+        this.paymentProcessing = false;
+        this.paymentSuccess = true;
+        this.toast.success('Payment Successful!');
+        
+        setTimeout(() => {
+          this.showCardModal = false;
+          this.processBill();
+        }, 1500);
+      } else {
+        this.paymentProcessing = false;
+        this.showCardModal = false;
+        this.toast.error('Payment Failed: Invalid OTP');
+      }
+    }, 2000);
   }
 
   initiateQRPayment() {
@@ -202,7 +285,7 @@ export class StaffDashboardComponent implements OnInit {
     this.paymentProcessing = true;
     this.paymentSuccess = false;
 
-    // Simulate 3s payment processing
+    // Simulate 8s payment processing
     setTimeout(() => {
       this.paymentProcessing = false;
       this.paymentSuccess = true;
@@ -213,7 +296,7 @@ export class StaffDashboardComponent implements OnInit {
         this.showQRModal = false;
         this.processBill();
       }, 1500);
-    }, 3000);
+    }, 8000);
   }
 
   processBill() {
@@ -235,6 +318,7 @@ export class StaffDashboardComponent implements OnInit {
         this.customerPhoneSearch = '';
         this.discountInput = 0;
         this.loadRecentBills();
+        this.loadProducts(); // Fresh inventory levels after sale
       },
       error: (err) => this.toast.error('Error creating bill: ' + err.error?.message)
     });

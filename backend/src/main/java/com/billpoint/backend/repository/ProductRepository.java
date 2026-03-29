@@ -9,5 +9,5 @@ import com.billpoint.backend.model.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByShop_Id(Long shopId);
-
+    List<Product> findByShop_IdAndSku(Long shopId, String sku);
 }

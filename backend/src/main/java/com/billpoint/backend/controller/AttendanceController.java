@@ -75,7 +75,7 @@ public class AttendanceController {
     }
 
     @GetMapping("/staff/{staffId}")
-    public ResponseEntity<List<Attendance>> getStaffAttendance(@PathVariable Long staffId) {
+    public ResponseEntity<List<Attendance>> getStaffAttendance(@PathVariable("staffId") Long staffId) {
         List<Attendance> history = attendanceRepository.findByStaff_IdOrderByDateDesc(staffId);
         return ResponseEntity.ok(history);
     }

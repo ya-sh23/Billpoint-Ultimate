@@ -65,8 +65,8 @@ public class ReportController {
 
     @GetMapping("/sales")
     public ResponseEntity<List<Bill>> getSalesData(
-            @RequestParam String startDate,
-            @RequestParam String endDate,
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
             Authentication authentication) {
         
         Long shopId = getAuthShopId(authentication);
@@ -86,8 +86,8 @@ public class ReportController {
 
     @GetMapping(value = "/download/sales", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> downloadSalesDateReport(
-            @RequestParam String startDate,
-            @RequestParam String endDate,
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
             Authentication authentication) {
         
         Long shopId = getAuthShopId(authentication);

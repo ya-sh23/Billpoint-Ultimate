@@ -1,14 +1,12 @@
 <div class="landing-page">
   <!-- Header / Navigation -->
   <header class="app-header">
-    <div class="logo-section">
-      <h1>BillPoint</h1>
+    <div routerLink="/" class="logo-section">
+      <h1 >BillPoint</h1>
     </div>
     <nav class="desktop-nav">
-      <a href="#home">Home</a>
-      <a href="#about">About Us</a>
+      <a href="/">Home</a>
       <a href="#pricing">Pricing</a>
-      <a href="#contact">Contact Us</a>
       <a routerLink="/register" class="nav-link">Sign Up</a>
       <button routerLink="/login" class="btn-primary login-btn">Login</button>
     </nav>
@@ -21,14 +19,11 @@
       <h2>Welcome to BillPoint,<br/><span class="highlight">The Ultimate Store Manager</span></h2>
       <p>Manage your offline store's billing, inventory, customers, and subscriptions all in one powerful, easy-to-use platform.</p>
       <div class="hero-actions">
-        <button class="btn-primary try-today-btn">Try Today &rarr;</button>
-        <button class="btn-outline learn-more-btn">Learn More</button>
+        <button class="btn-primary try-today-btn" routerLink="/register">Try Today &rarr;</button>
+
       </div>
     </div>
-    <div class="hero-image">
-      <!-- Placeholder for the dashboard mockup image from design -->
-      <div class="image-placeholder"></div>
-    </div>
+
   </section>
 
   <!-- Features Section -->
@@ -38,33 +33,23 @@
     
     <div class="features-grid">
       <div class="feature-card">
-        <div class="icon-wrapper bg-teal-light">
-          <span class="icon"></span>
-        </div>
         <h4>POS Billing</h4>
         <p>Lightning-fast checkout experience. Process sales, apply discounts, and generate customized receipts instantly.</p>
       </div>
 
       <div class="feature-card">
-        <div class="icon-wrapper bg-blue-light">
-          <span class="icon"></span>
-        </div>
         <h4>Inventory Tracking</h4>
         <p>Real-time stock monitoring, low inventory alerts, and easy supply management across multiple locations.</p>
       </div>
 
       <div class="feature-card">
-        <div class="icon-wrapper bg-purple-light">
-          <span class="icon"></span>
-        </div>
+
         <h4>Customer & Staff</h4>
         <p>Manage employee shifts, roles, and track customer purchase history and loyalty points seamlessly.</p>
       </div>
 
       <div class="feature-card">
-        <div class="icon-wrapper bg-orange-light">
-          <span class="icon"></span>
-        </div>
+
         <h4>Subscriptions</h4>
         <p>Handle recurring billing and subscription deliveries natively within the platform for your recurring customers.</p>
       </div>
@@ -76,8 +61,8 @@
     <h2>Ready to upgrade your store?</h2>
     <p>Join thousands of businesses streamlining their operations with BillPoint.</p>
     <div class="cta-actions">
-      <button class="btn-white">Start Free Trial</button>
-      <button class="btn-outline-white">View Demo</button>
+      <button class="btn-white" routerLink="/register">Start Free Trial</button>
+ 
     </div>
   </section>
 
@@ -91,8 +76,7 @@
         </div>
         <p>The all-in-one SaaS platform for managing your offline retail business offline and online.</p>
         <div class="social-links">
-          <a href="#" class="social-icon"></a>
-          <a href="#" class="social-icon"></a>
+
         </div>
       </div>
       

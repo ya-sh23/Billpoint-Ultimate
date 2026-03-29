@@ -23,10 +23,10 @@ export class LoginComponent {
   errorMessage = '';
 
   constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private router: Router,
     private toast: ToastService
-  ) {}
+  ) { }
 
   selectRole(role: string) {
     this.selectedRole = role;
@@ -35,14 +35,15 @@ export class LoginComponent {
   onSubmit() {
     this.isLoading = true;
     this.errorMessage = '';
+    this.toast.info("Authenticating..."); // DEBUG: Check if toast is reachable
 
     this.authService.login(this.credentials).subscribe({
       next: (response: any) => {
         this.isLoading = false;
         const role = response.role;
         this.toast.success("Login successful!");
-        
-        switch(role) {
+
+        switch (role) {
           case 'ADMIN':
             this.router.navigate(['/admin-dashboard']);
             break;
@@ -61,9 +62,13 @@ export class LoginComponent {
       },
       error: (err) => {
         this.isLoading = false;
-        const msg = err.error?.message || 'Login failed. Please check your credentials.';
+        const msg = err.status === 401 ? 'Invalid credentials' : (err.error?.message || 'Invalid credentials');
         this.errorMessage = msg;
-        this.toast.error(msg);
+
+        // Use timeout to ensure it shows after card error banner
+        setTimeout(() => {
+          this.toast.error(msg);
+        }, 100);
       }
     });
   }

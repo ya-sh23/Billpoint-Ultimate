@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
     <div class="toast-container">
       <div *ngFor="let toast of toasts; let i = index" 
            class="toast-item" 
-           [class]="toast.type"
+           [ngClass]="toast.type"
            (click)="removeToast(i)">
         <div class="toast-icon">
           <i *ngIf="toast.type === 'success'" class="fas fa-check-circle"></i>
@@ -31,7 +31,7 @@ import { Subscription } from 'rxjs';
       position: fixed;
       top: 1rem;
       right: 1rem;
-      z-index: 9999;
+      z-index: 2147483647;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;

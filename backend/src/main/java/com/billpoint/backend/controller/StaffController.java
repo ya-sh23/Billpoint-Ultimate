@@ -132,7 +132,7 @@ public class StaffController {
 
     @GetMapping("/customers/search")
     public ResponseEntity<?> searchCustomerByPhone(
-            @RequestParam String phone,
+            @RequestParam("phone") String phone,
             Authentication authentication) {
 
         Staff staff = getAuthStaff(authentication);
@@ -239,7 +239,7 @@ public class StaffController {
     }
 
     @GetMapping("/bills/{id}/invoice")
-    public ResponseEntity<byte[]> getInvoice(@PathVariable Long id) {
+    public ResponseEntity<byte[]> getInvoice(@PathVariable("id") Long id) {
         Bill bill = billRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Bill not found"));
 
