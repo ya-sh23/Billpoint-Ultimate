@@ -46,8 +46,8 @@
           </div>
           <div class="input-group">
             <label>Working Hours</label>
-            <input type="number" [(ngModel)]="attendance.workingHours" placeholder="Enter hours" min="0" max="24" required #whours="ngModel">
-            <div *ngIf="whours.invalid && whours.touched" class="error-text small text-danger">Enter 0-24 hrs</div>
+            <input type="number" [(ngModel)]="attendance.workingHours" placeholder="Enter hours (0-9)" min="0" max="9" required #whours="ngModel">
+            <div *ngIf="whours.invalid && whours.touched" class="error-text small text-danger">Enter 0-9 hrs</div>
           </div>
           <div class="input-group">
             <label>Security Code</label>
@@ -279,7 +279,7 @@
           <div class="form-row">
             <div class="input-group">
               <label>Expiry (MM/YY)</label>
-              <input type="text" maxlength="5" [(ngModel)]="cardDetails.expiry" placeholder="MM/YY">
+              <input type="text" maxlength="4" [(ngModel)]="cardDetails.expiry" placeholder="MM/YY">
             </div>
             <div class="input-group">
               <label>CVV</label>
@@ -288,8 +288,8 @@
           </div>
           <div class="input-group otp-group">
             <label>Enter 6-Digit OTP</label>
-            <input type="text" maxlength="6" [(ngModel)]="cardDetails.otp" placeholder="123456">
-            <small class="text-muted">Use static OTP for testing.</small>
+            <input type="text" maxlength="6" [(ngModel)]="cardDetails.otp" placeholder="Enter 6 digit OTP">
+            <!-- <small class="text-muted">Use static OTP for testing.</small> -->
           </div>
 
           <button class="btn-primary w-100 mt-3" (click)="verifyCardPayment()" [disabled]="paymentProcessing">
